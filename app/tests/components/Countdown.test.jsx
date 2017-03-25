@@ -10,4 +10,29 @@ describe('Countdown', ()=>{
     it('should exist', () => {
         expect(Countdown).toExist();
     })
+
+    describe('handleSetCountdown', ()=>{
+        it('should set state to started and countdown', (done)=>{ //callback as we're making async work
+            var countdown = TestUtils.renderIntoDocument(<Countdown />);
+            countdown.handleSetCountdown(10);
+
+            expect(countdown.state.count).toBe(10);
+            expect(countdown.state.countdownStatus).toBe('started');
+
+            setTimeout(()=>{
+                expect(countdown.state.count).toBe(9);
+                done();
+                }, 1001)
+        });
+
+        it('should never set count below 0', (done)=>{ //callback as we're making async work
+            var countdown = TestUtils.renderIntoDocument(<Countdown />);
+            countdown.handleSetCountdown(1);
+
+            setTimeout(()=>{
+                expect(countdown.state.count).toBe(0);
+                done();
+                }, 3001)
+        });
+    })
 })
